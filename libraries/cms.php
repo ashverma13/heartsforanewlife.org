@@ -2,7 +2,7 @@
 /**
  * @package    Joomla.Libraries
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -30,7 +30,7 @@ if (!class_exists('JLoader'))
 JLoader::registerPrefix('J', JPATH_PLATFORM . '/cms', false, true);
 
 // Create the Composer autoloader
-$loader = require_once JPATH_LIBRARIES . '/vendor/autoload.php';
+$loader = require JPATH_LIBRARIES . '/vendor/autoload.php';
 $loader->unregister();
 
 // Decorate Composer autoloader
@@ -63,6 +63,9 @@ if (array_key_exists('REQUEST_METHOD', $_SERVER))
 
 // Register JArrayHelper due to JRegistry moved to composer's vendor folder
 JLoader::register('JArrayHelper', JPATH_PLATFORM . '/joomla/utilities/arrayhelper.php');
+
+// Register the Crypto lib
+JLoader::register('Crypto', JPATH_PLATFORM . '/php-encryption/Crypto.php');
 
 // Register classes where the names have been changed to fit the autoloader rules
 // @deprecated  4.0

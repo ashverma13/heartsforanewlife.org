@@ -3,7 +3,7 @@
  * @package     Joomla.Libraries
  * @subpackage  Help
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -28,7 +28,7 @@ class JHelp
 	 *
 	 * @since   1.5
 	 */
-	public static function createURL($ref, $useComponent = false, $override = null, $component = null)
+	public static function createUrl($ref, $useComponent = false, $override = null, $component = null)
 	{
 		$local = false;
 		$app   = JFactory::getApplication();
@@ -119,7 +119,7 @@ class JHelp
 			// Joomla minor version number
 			'{minor}',
 			// Joomla maintenance version number
-			'{maintenance}'
+			'{maintenance}',
 		);
 
 		$replace = array(
@@ -140,7 +140,7 @@ class JHelp
 			// {minor}
 			$jver[1],
 			// {maintenance}
-			$jver[2]
+			$jver[2],
 		);
 
 		// If the help file is local then check it exists.

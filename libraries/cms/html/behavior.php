@@ -3,7 +3,7 @@
  * @package     Joomla.Libraries
  * @subpackage  HTML
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -35,6 +35,7 @@ abstract class JHtmlBehavior
 	 * @return  void
 	 *
 	 * @since   1.6
+	 * @deprecated 4.0 Update scripts to jquery
 	 */
 	public static function framework($extras = false, $debug = null)
 	{
@@ -45,6 +46,8 @@ abstract class JHtmlBehavior
 		{
 			return;
 		}
+
+		JLog::add('JHtmlBehavior::framework is deprecated. Update to jquery scripts.', JLog::WARNING, 'deprecated');
 
 		// If no debugging value is set, use the configuration setting
 		if ($debug === null)
@@ -343,6 +346,7 @@ abstract class JHtmlBehavior
 	 * @return  void
 	 *
 	 * @since   1.5
+	 * @deprecated 4.0  Use the modal equivalent from bootstrap
 	 */
 	public static function modal($selector = 'a.modal', $params = array())
 	{
@@ -365,6 +369,8 @@ abstract class JHtmlBehavior
 		{
 			return;
 		}
+
+		JLog::add('JHtmlBehavior::modal is deprecated. Use the modal equivalent from bootstrap.', JLog::WARNING, 'deprecated');
 
 		// Setup options object
 		$opt['ajaxOptions']   = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
@@ -405,9 +411,38 @@ abstract class JHtmlBehavior
 				parse: 'rel'
 			});
 		});
-		function jModalClose() {
+
+		window.jModalClose = function () {
 			SqueezeBox.close();
-		}"
+		};
+		
+		// Add extra modal close functionality for tinyMCE-based editors
+		document.onreadystatechange = function () {
+			if (document.readyState == 'interactive' && typeof tinyMCE != 'undefined' && tinyMCE)
+			{
+				if (typeof window.jModalClose_no_tinyMCE === 'undefined')
+				{	
+					window.jModalClose_no_tinyMCE = typeof(jModalClose) == 'function'  ?  jModalClose  :  false;
+					
+					jModalClose = function () {
+						if (window.jModalClose_no_tinyMCE) window.jModalClose_no_tinyMCE.apply(this, arguments);
+						tinyMCE.activeEditor.windowManager.close();
+					};
+				}
+		
+				if (typeof window.SqueezeBoxClose_no_tinyMCE === 'undefined')
+				{
+					if (typeof(SqueezeBox) == 'undefined')  SqueezeBox = {};
+					window.SqueezeBoxClose_no_tinyMCE = typeof(SqueezeBox.close) == 'function'  ?  SqueezeBox.close  :  false;
+		
+					SqueezeBox.close = function () {
+						if (window.SqueezeBoxClose_no_tinyMCE)  window.SqueezeBoxClose_no_tinyMCE.apply(this, arguments);
+						tinyMCE.activeEditor.windowManager.close();
+					};
+				}
+			}
+		};
+		"
 		);
 
 		// Set static array
@@ -578,7 +613,15 @@ abstract class JHtmlBehavior
 					jQuery('.minicolors').each(function() {
 						jQuery(this).minicolors({
 							control: jQuery(this).attr('data-control') || 'hue',
-							position: jQuery(this).attr('data-position') || 'right',
+							format: jQuery(this).attr('data-validate') === 'color'
+								? 'hex'
+								: (jQuery(this).attr('data-format') === 'rgba'
+									? 'rgb'
+									: jQuery(this).attr('data-format'))
+								|| 'hex',
+							keywords: jQuery(this).attr('data-keywords') || '',
+							opacity: jQuery(this).attr('data-format') === 'rgba' ? true : false || false,
+							position: jQuery(this).attr('data-position') || 'default',
 							theme: 'bootstrap'
 						});
 					});
@@ -634,28 +677,43 @@ abstract class JHtmlBehavior
 			return;
 		}
 
-		$config = JFactory::getConfig();
-		$lifetime = ($config->get('lifetime') * 60000);
-		$refreshTime = ($lifetime <= 60000) ? 30000 : $lifetime - 60000;
+		$session = JFactory::getSession();
 
-		// Refresh time is 1 minute less than the lifetime assigned in the configuration.php file.
-
-		// The longest refresh period is one hour to prevent integer overflow.
-		if ($refreshTime > 3600000 || $refreshTime <= 0)
+		// If the handler is not 'Database', we set a fixed, small refresh value (here: 5 min)
+		if ($session->storeName != 'database')
 		{
-			$refreshTime = 3600000;
+			$refresh_time = 300000;
+		}
+		else
+		{
+			$life_time    = $session->getExpire() * 1000;
+			$refresh_time = ($life_time <= 60000) ? 45000 : $life_time - 60000;
+
+			// The longest refresh period is one hour to prevent integer overflow.
+			if ($refresh_time > 3600000 || $refresh_time <= 0)
+			{
+				$refresh_time = 3600000;
+			}
 		}
 
-		$document = JFactory::getDocument();
+		$url = JUri::base(true) . '/index.php';
+
+		// If we are in the frontend or logged in as a user, we can use the ajax component to reduce the load
+		if (JFactory::getApplication()->isSite() || !JFactory::getUser()->guest)
+		{
+			$url .= '?option=com_ajax&format=json';
+		}
+
 		$script = 'window.setInterval(function(){';
 		$script .= 'var r;';
 		$script .= 'try{';
 		$script .= 'r=window.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP")';
 		$script .= '}catch(e){}';
-		$script .= 'if(r){r.open("GET","./",true);r.send(null)}';
-		$script .= '},' . $refreshTime . ');';
+		$script .= 'if(r){r.open("GET","' . $url . '",true);r.send(null)}';
+		$script .= '},' . $refresh_time . ');';
 
-		$document->addScriptDeclaration($script);
+		JFactory::getDocument()->addScriptDeclaration($script);
+
 		static::$loaded[__METHOD__] = true;
 
 		return;
@@ -685,6 +743,16 @@ abstract class JHtmlBehavior
 			return;
 		}
 
+		$terms = array_filter($terms, 'strlen');
+
+		// Nothing to Highlight
+		if (empty($terms))
+		{
+			static::$loaded[__METHOD__][$sig] = true;
+
+			return;
+		}
+
 		// Include core
 		static::core();
 
@@ -693,7 +761,10 @@ abstract class JHtmlBehavior
 
 		JHtml::_('script', 'system/highlighter.js', false, true);
 
-		$terms = str_replace('"', '\"', $terms);
+		foreach ($terms as $i => $term)
+		{
+			$terms[$i] = JFilterOutput::stringJSSafe($term);
+		}
 
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration("
@@ -741,8 +812,18 @@ abstract class JHtmlBehavior
 		// Include jQuery
 		JHtml::_('jquery.framework');
 
-		$js = "jQuery(function () {if (top == self) {document.documentElement.style.display = 'block'; }" .
-			" else {top.location = self.location; }});";
+		$js = 'jQuery(function () {
+			if (top == self) {
+				document.documentElement.style.display = "block";
+			}
+			else
+			{
+				top.location = self.location;
+			}
+
+			// Firefox fix
+			jQuery("input[autofocus]").focus();
+		})';
 		$document = JFactory::getDocument();
 		$document->addStyleDeclaration('html { display:none }');
 		$document->addScriptDeclaration($js);
@@ -789,37 +870,36 @@ abstract class JHtmlBehavior
 		$jsscript = 1;
 
 		// To keep the code simple here, run strings through JText::_() using array_map()
-		$callback = array('JText','_');
+		$callback = array('JText', '_');
 		$weekdays_full = array_map(
 			$callback, array(
-				'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'
+				'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY',
 			)
 		);
 		$weekdays_short = array_map(
 			$callback,
 			array(
-				'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'
+				'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN',
 			)
 		);
 		$months_long = array_map(
 			$callback, array(
 				'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
-				'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
+				'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER',
 			)
 		);
 		$months_short = array_map(
 			$callback, array(
 				'JANUARY_SHORT', 'FEBRUARY_SHORT', 'MARCH_SHORT', 'APRIL_SHORT', 'MAY_SHORT', 'JUNE_SHORT',
-				'JULY_SHORT', 'AUGUST_SHORT', 'SEPTEMBER_SHORT', 'OCTOBER_SHORT', 'NOVEMBER_SHORT', 'DECEMBER_SHORT'
+				'JULY_SHORT', 'AUGUST_SHORT', 'SEPTEMBER_SHORT', 'OCTOBER_SHORT', 'NOVEMBER_SHORT', 'DECEMBER_SHORT',
 			)
 		);
 
 		// This will become an object in Javascript but define it first in PHP for readability
 		$today = " " . JText::_('JLIB_HTML_BEHAVIOR_TODAY') . " ";
 		$text = array(
-			'INFO'			=> JText::_('JLIB_HTML_BEHAVIOR_ABOUT_THE_CALENDAR'),
-
-			'ABOUT'			=> "DHTML Date/Time Selector\n"
+			'INFO'           => JText::_('JLIB_HTML_BEHAVIOR_ABOUT_THE_CALENDAR'),
+			'ABOUT'          => "DHTML Date/Time Selector\n"
 				. "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n"
 				. "For latest version visit: http://www.dynarch.com/projects/calendar/\n"
 				. "Distributed under GNU LGPL.  See http://gnu.org/licenses/lgpl.html for details."
@@ -828,29 +908,27 @@ abstract class JHtmlBehavior
 				. JText::_('JLIB_HTML_BEHAVIOR_YEAR_SELECT')
 				. JText::_('JLIB_HTML_BEHAVIOR_MONTH_SELECT')
 				. JText::_('JLIB_HTML_BEHAVIOR_HOLD_MOUSE'),
-
-			'ABOUT_TIME'	=> "\n\n"
+			'ABOUT_TIME'      => "\n\n"
 				. "Time selection:\n"
 				. "- Click on any of the time parts to increase it\n"
 				. "- or Shift-click to decrease it\n"
 				. "- or click and drag for faster selection.",
-
-			'PREV_YEAR'		=> JText::_('JLIB_HTML_BEHAVIOR_PREV_YEAR_HOLD_FOR_MENU'),
-			'PREV_MONTH'	=> JText::_('JLIB_HTML_BEHAVIOR_PREV_MONTH_HOLD_FOR_MENU'),
-			'GO_TODAY'		=> JText::_('JLIB_HTML_BEHAVIOR_GO_TODAY'),
-			'NEXT_MONTH'	=> JText::_('JLIB_HTML_BEHAVIOR_NEXT_MONTH_HOLD_FOR_MENU'),
-			'SEL_DATE'		=> JText::_('JLIB_HTML_BEHAVIOR_SELECT_DATE'),
-			'DRAG_TO_MOVE'	=> JText::_('JLIB_HTML_BEHAVIOR_DRAG_TO_MOVE'),
-			'PART_TODAY'	=> $today,
-			'DAY_FIRST'		=> JText::_('JLIB_HTML_BEHAVIOR_DISPLAY_S_FIRST'),
-			'WEEKEND'		=> JFactory::getLanguage()->getWeekEnd(),
-			'CLOSE'			=> JText::_('JLIB_HTML_BEHAVIOR_CLOSE'),
-			'TODAY'			=> JText::_('JLIB_HTML_BEHAVIOR_TODAY'),
-			'TIME_PART'		=> JText::_('JLIB_HTML_BEHAVIOR_SHIFT_CLICK_OR_DRAG_TO_CHANGE_VALUE'),
-			'DEF_DATE_FORMAT'	=> "%Y-%m-%d",
-			'TT_DATE_FORMAT'	=> JText::_('JLIB_HTML_BEHAVIOR_TT_DATE_FORMAT'),
-			'WK'			=> JText::_('JLIB_HTML_BEHAVIOR_WK'),
-			'TIME'			=> JText::_('JLIB_HTML_BEHAVIOR_TIME')
+			'PREV_YEAR'       => JText::_('JLIB_HTML_BEHAVIOR_PREV_YEAR_HOLD_FOR_MENU'),
+			'PREV_MONTH'      => JText::_('JLIB_HTML_BEHAVIOR_PREV_MONTH_HOLD_FOR_MENU'),
+			'GO_TODAY'        => JText::_('JLIB_HTML_BEHAVIOR_GO_TODAY'),
+			'NEXT_MONTH'      => JText::_('JLIB_HTML_BEHAVIOR_NEXT_MONTH_HOLD_FOR_MENU'),
+			'SEL_DATE'        => JText::_('JLIB_HTML_BEHAVIOR_SELECT_DATE'),
+			'DRAG_TO_MOVE'    => JText::_('JLIB_HTML_BEHAVIOR_DRAG_TO_MOVE'),
+			'PART_TODAY'      => $today,
+			'DAY_FIRST'       => JText::_('JLIB_HTML_BEHAVIOR_DISPLAY_S_FIRST'),
+			'WEEKEND'         => JFactory::getLanguage()->getWeekEnd(),
+			'CLOSE'           => JText::_('JLIB_HTML_BEHAVIOR_CLOSE'),
+			'TODAY'           => JText::_('JLIB_HTML_BEHAVIOR_TODAY'),
+			'TIME_PART'       => JText::_('JLIB_HTML_BEHAVIOR_SHIFT_CLICK_OR_DRAG_TO_CHANGE_VALUE'),
+			'DEF_DATE_FORMAT' => "%Y-%m-%d",
+			'TT_DATE_FORMAT'  => JText::_('JLIB_HTML_BEHAVIOR_TT_DATE_FORMAT'),
+			'WK'              => JText::_('JLIB_HTML_BEHAVIOR_WK'),
+			'TIME'            => JText::_('JLIB_HTML_BEHAVIOR_TIME'),
 		);
 
 		return 'Calendar._DN = ' . json_encode($weekdays_full) . ';'
@@ -864,11 +942,14 @@ abstract class JHtmlBehavior
 	/**
 	 * Add unobtrusive JavaScript support to keep a tab state.
 	 *
-	 * Note that keeping tab state only works for inner tabs if in accordance with the following example
+	 * Note that keeping tab state only works for inner tabs if in accordance with the following example:
+	 *
+	 * ```
 	 * parent tab = permissions
 	 * child tab = permission-<identifier>
+	 * ```
 	 *
-	 * Each tab header "a" tag also should have a unique href attribute
+	 * Each tab header `<a>` tag also should have a unique href attribute
 	 *
 	 * @return  void
 	 *

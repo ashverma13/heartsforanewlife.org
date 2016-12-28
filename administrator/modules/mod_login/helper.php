@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  mod_login
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -39,7 +39,7 @@ abstract class ModLoginHelper
 		);
 
 		// Fix wrongly set parentheses in RTL languages
-		if (JFactory::getLanguage()->isRTL())
+		if (JFactory::getLanguage()->isRtl())
 		{
 			foreach ($languages as &$language)
 			{
@@ -57,7 +57,7 @@ abstract class ModLoginHelper
 	 *
 	 * @return  string
 	 */
-	public static function getReturnURI()
+	public static function getReturnUri()
 	{
 		$uri    = JUri::getInstance();
 		$return = 'index.php' . $uri->toString(array('query'));
@@ -77,11 +77,13 @@ abstract class ModLoginHelper
 	 * on user view
 	 *
 	 * @return  array
+	 *
+	 * @deprecated  4.0  Use JAuthenticationHelper::getTwoFactorMethods() instead.
 	 */
 	public static function getTwoFactorMethods()
 	{
-		require_once JPATH_ADMINISTRATOR . '/components/com_users/helpers/users.php';
+		JLog::add(__METHOD__ . ' is deprecated, use JAuthenticationHelper::getTwoFactorMethods() instead.', JLog::WARNING, 'deprecated');
 
-		return UsersHelper::getTwoFactorMethods();
+		return JAuthenticationHelper::getTwoFactorMethods();
 	}
 }
