@@ -1,0 +1,201 @@
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.mod_caroufredsel {
+  overflow: hidden;
+  margin-bottom: 55px;
+  position: relative;
+}
+.mod_caroufredsel .list_carousel {
+  padding: 0;
+  padding-bottom: 55px;
+  width: auto;
+  margin: 0 0 0 -30px;
+}
+.mod_caroufredsel .list_carousel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mod_caroufredsel .list_carousel ul li {
+  padding: 0 0 0 30px;
+  margin: 0;
+  display: block;
+  float: left;
+}
+.mod_caroufredsel .list_carousel ul li .item_img {
+  margin-bottom: 0;
+}
+.mod_caroufredsel .list_carousel ul li h4.item_title {
+  font: 14px/18px 'Roboto Condensed', sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+}
+.mod_caroufredsel .list_carousel ul li h4.item_title a {
+  display: block;
+  background: #ed1f24;
+  color: #ffffff;
+  padding: 10px 20px;
+  letter-spacing: 1px;
+  min-height: 61px;
+  padding: 16px 20px;
+  position: relative;
+}
+.mod_caroufredsel .list_carousel ul li h4.item_title a:before {
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 8px 8px 8px;
+  border-color: transparent transparent #ffffff transparent;
+  content: "";
+  position: absolute;
+  left: 50%;
+  margin-left: -8px;
+  bottom: 0;
+}
+.mod_caroufredsel .list_carousel ul li h4.item_title a:hover {
+  background: #2a2a2a;
+  color: #ffffff;
+}
+.mod_caroufredsel.mod_caroufredsel__stories .item_content {
+  background: url(../images/template/blockquote.png) 0 0 no-repeat;
+  padding-left: 100px;
+}
+.mod_caroufredsel.mod_caroufredsel__stories .item_content blockquote {
+  margin-bottom: 15px;
+}
+.mod_caroufredsel.mod_caroufredsel__stories .item_content blockquote:after {
+  content: url(../images/template/blockquote_after.png);
+  vertical-align: sub;
+  margin-left: 10px;
+}
+.mod_caroufredsel.mod_caroufredsel__stories .item_content .item_title {
+  font: 300 36px/40px 'Roboto Condensed', sans-serif;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
+  text-transform: none;
+  text-align: left;
+  color: #ffffff;
+}
+.mod_caroufredsel.mod_caroufredsel__slogans {
+  margin-bottom: 0;
+}
+.mod_caroufredsel.mod_caroufredsel__slogans .item_content {
+  padding-top: 24px;
+  padding-bottom: 4px;
+  max-width: 630px;
+  margin: 0 auto;
+  text-align: center;
+}
+.mod_caroufredsel.mod_caroufredsel__slogans .item_content h1 {
+  color: #ffffff;
+}
+.mod_caroufredsel .caroufredsel_prev,
+.mod_caroufredsel .caroufredsel_next {
+  position: absolute;
+  top: auto;
+  bottom: 0%;
+  display: block;
+  height: 28px;
+  width: 77px;
+  background: url(../images/template/navigation.png) no-repeat !important;
+  background-color: #ed1f24 !important;
+  line-height: 20px;
+  text-align: center;
+  z-index: 99;
+  left: 50%;
+  cursor: pointer;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+.mod_caroufredsel .caroufredsel_prev:hover,
+.mod_caroufredsel .caroufredsel_next:hover {
+  background-color: #333333 !important;
+}
+.mod_caroufredsel .caroufredsel_prev {
+  margin-left: -82px;
+  background-position: 33px 7px !important;
+}
+.mod_caroufredsel .caroufredsel_next {
+  margin-left: 5px;
+  background-position: -54px 7px !important;
+}
+.caroufredsel_wrapper {
+  cursor: auto !important;
+}
+@media (max-width: 1200px) {
+  .list_carousel {
+    margin: 0 0 0 -20px;
+  }
+  .list_carousel ul li {
+    padding: 0 0 0 20px;
+  }
+}
+@media (max-width: 979px) {
+  .list_carousel {
+    margin: 0 0 0 -12px;
+  }
+  .list_carousel ul li {
+    padding: 0 0 0 12px;
+  }
+}
+.clearfix {
+  float: none;
+  clear: both;
+}
+/*Navigation*/
+.camera_prev {
+  left: 0;
+  background-position: 0 0;
+}
+.camera_next {
+  right: 0;
+}
+/*Pagination*/
+.caroufredsel_pagination {
+  margin-bottom: -11px;
+  text-align: center;
+}
+.caroufredsel_pagination a {
+  width: 8px;
+  height: 8px;
+  font-size: 0;
+  line-height: 0;
+  display: inline-block;
+  padding: 0;
+  margin: 0 3px;
+  background: #ffffff;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+.caroufredsel_pagination a:hover,
+.caroufredsel_pagination a.selected {
+  background: #ed1f24;
+}

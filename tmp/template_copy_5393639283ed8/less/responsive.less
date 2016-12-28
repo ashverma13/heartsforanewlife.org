@@ -1,0 +1,412 @@
+// Core variables and mixins
+@import "variables.less"; // Custom for this template
+@import "../../../media/jui/less/mixins.less";
+
+
+/*== 1200px and beyond ===================================================
+========================================================================*/
+
+/* Large desktop */
+@media (min-width: 1200px) {} 
+
+/*== Up to 1200px =====================================================
+========================================================================*/
+
+/* Large desktop */
+@media (max-width: 1200px) {
+
+  #contact_map{
+    height: 376px;
+  }
+  .row-fluid {
+    margin-left: -@gridGutterWidth;
+    [class*="itemSpan"],[class*="span"] {
+      padding-left: @gridGutterWidth;
+    }
+  }
+  .fluid{
+    margin-left: -@gridGutterWidth;
+  }
+
+} 
+
+/*== Up to 980px ======================================================
+========================================================================*/
+
+/* Narrow desktop */
+@media (max-width: 979px) {
+
+  .moduletable.posts .item_title {
+    font-size: 30px;
+  }
+  
+  .thumbnails {
+    margin-left: -12px;
+  }
+  .thumbnails > li {
+    margin-left: 12px;
+  }
+
+  /*footer*/
+  #back-top{
+    display: none !important;
+  }
+
+  .row-fluid {
+    margin-left: -@gridGutterWidth768;
+    [class*="itemSpan"],[class*="span"] {
+      padding-left: @gridGutterWidth768;
+    }
+  }
+  .fluid{
+    margin-left: -@gridGutterWidth768;
+  }
+
+}
+
+/*== Up to 980px and beyond 768px ======================================
+========================================================================*/
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+
+
+
+}
+
+
+/*== Up to 767px ======================================================
+========================================================================*/
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px){
+
+  body{
+    padding: 0;
+    .row-container{
+      padding: 0 20px;
+    }
+  }
+
+  #wrapper .wrapper-inner {
+    padding-top: 40px;
+  }
+  .navigation {
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
+
+  h1 {
+    font-size: 52px;
+    line-height: 60px;
+  }
+  #logo {
+    margin-bottom: 20px;
+  }
+
+  .mod-newsflash-adv.mod-newsflash-adv__align .row-fluid .item:first-child{
+    text-align: left;
+    .item_content {
+      padding: 0;
+    }
+  }
+  .mod_caroufredsel.mod_caroufredsel__stories .item_content {
+    padding-left: 0px !important;
+    padding-top: 60px;
+  }
+
+  // Stick to bottom footer styles
+  #wrapper{
+    margin: 0;
+  }
+
+  #footer-wrapper{
+    height: auto;
+  }
+
+  #push{
+    display: none;
+  }
+
+  #logo{
+    text-align: center;
+    a{
+      margin: 0;
+    }
+  }
+
+  .nav.menu.pull-right.nav-pills{
+    float: none;
+    text-align: center;
+    li{
+      float: none;
+      display: inline-block;
+    }
+  }
+
+  .social{
+    text-align: left;
+    padding: 10px 0;
+  }
+
+
+  /*content*/
+
+    [class*="cols"]{
+      [class*="span"]{
+        width: 100%;
+      }
+    }
+
+  .item-image.blog-image{
+    float: none;
+    margin: 0 0 20px 0;
+  }
+
+  .row-fluid {
+    [class*="itemSpan"],
+    [class*="span"] {
+      display: block;
+      float: none;
+      margin-left: 0;
+      width: auto;
+    }
+  }
+
+  /*gallery*/
+  .page-gallery{
+    ul.gallery{
+      .gallery-grid{
+        width: 48.5%;
+        max-width: 48.5%;
+      }
+    }
+  }
+
+  .page-gallery ul.gallery .gallery-grid .view .item_img{
+    max-width: 100%;
+    a{
+      display: block;
+    }
+  }
+
+  .img-full__left.span5{
+    width: 50%;
+  }
+
+  /*contact*/
+  .contact_details{
+    .contact_details_item{
+      width: 30%;
+      float: left;
+    }
+  }
+
+  .page-gallery ul.gallery .gallery-grid .view{
+    margin: 0 auto;
+    .item_img{
+      float: none;
+      margin: 0 !important;
+    }
+  }
+
+  /*Modules*/
+
+  /*search*/
+  .mod-search__aside{
+    .mod-search_searchword{
+      width: 50%;
+    }
+  }
+
+  /*login*/
+  .mod-login__aside{
+    .mod-login_username,
+    .mod-login_passwd{
+      width: 50%;
+    }
+  }
+
+  #back-top{
+    display:none !important;
+  }
+
+}
+
+/*== Up to 640px ==================================================
+====================================================================*/
+
+@media (max-width: 640px) {
+
+  h1 {
+    font-size: 42px;
+    line-height: 40px;
+  }
+  h2,h3{
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  /*contact*/
+
+  .contact_details{
+    margin-bottom: @baseLineHeight;
+    .contact_details_item{
+      width: 100%;
+      float: none;
+    }
+  }
+
+  .layout-mode{
+    float: none;
+  }
+
+}
+
+/*== Up to 480px ==================================================
+====================================================================*/
+
+/* Landscape phones and down */
+@media (max-width: 479px) {
+
+  /*contact*/
+
+  .contact_form{
+    width: 100%;
+  }
+
+  /*registration*/
+
+  .page-registration,
+  .page-remind,
+  .page-reset,
+  .page-login,
+  .page-login,
+  .page-profile__edit{
+    form{
+      input, select{
+        width: 100%;
+      }
+      label{
+        display: inline-block;
+      }
+    }
+  }
+
+  /* pagination */
+
+  .pagination{
+    ul{
+      li{
+        display: none;
+        &.pagination-prev,
+        &.pagination-next{
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  /*gallery*/
+
+  .page-gallery{
+    .item_img.img-intro{
+      float: none;
+      margin: 0 0 @baseLineHeight 0;
+    }
+    ul.gallery{
+      .gallery-item{
+        text-align: center;
+        max-width: 100%;
+        width: 100%;
+        .item_img{
+          float: none;
+          margin: 0 auto @baseLineHeight !important;
+          max-width: 100%;
+          img{
+            width: 100%;
+          }
+        }
+        a.zoom{
+          display: block;
+        }
+      }
+    }
+  }
+
+  .img-full__left.span5{
+    width: 100%;
+    margin-right:0;
+  }
+
+  /*blog*/
+
+  .item_img{
+    float: none;
+     margin: 0 0 @baseLineHeight 0;
+     max-width: 100%;
+  }
+
+  /*archive*/
+
+  .page-archive_filters{
+    select{
+      display: block;
+      width: 100%;
+    }
+  }
+
+  /*contact*/
+
+  .contact_details{
+    .contact_details_item{
+      width: 100%;
+      float: none;
+    }
+  }
+
+  /*Modules*/
+
+  /*search*/
+
+  .mod-search__aside{
+    .mod-search_searchword{
+      width: 100%;
+    }
+  }
+
+  /*login*/
+
+  .mod-login__aside{
+    .mod-login_userdata{
+      width: 100%;
+      overflow: hidden;
+    }
+    .mod-login_username,
+    .mod-login_passwd{
+      width: 100%;
+    }
+  }
+
+  div.modal{
+    position:absolute;
+  }
+  #error{
+    input{
+      width: 200px;
+    }
+  }
+}
+
+/*== Up to 340px =====================================================
+========================================================================*/
+
+/* Portrait phones */
+@media (max-width: 340px) {
+
+  .mod_caroufredsel .list_carousel ul li h4.item_title a {
+    padding: 16px 10px !important;
+    min-height: 72px !important;
+  }
+  
+}

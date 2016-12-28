@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>Ultimate Facebook Like Box Slider</name>
+	<author>Priam Talukder</author>
+	<creationDate>July 2013</creationDate>
+	<copyright>Copyright (C)2013 Four Pixel</copyright>
+	<license>GNU General Public License version 2 or later</license>
+	<authorEmail>priam@joomexperts.com</authorEmail>
+	<authorUrl>www.joomexperts.com</authorUrl>
+	<version>1.0</version>
+	<description>Thanks for installing Ultimate Facebook Like Box Slider</description>
+	<files>
+		<folder>assets</folder>
+		<filename module="mod_fblikeboxslider">mod_fblikeboxslider.php</filename>
+		<filename>index.html</filename>
+		<filename>mod_fblikeboxslider.xml</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="facebook_url"
+					type="text"
+					default="https://www.facebook.com/FacebookDevelopers"
+					label="Facebook Page URL"
+					description="Put your facebook page URL" />
+				<field 
+					name="fbwidth"
+					type="text"
+					default="290"
+					label="Width" 
+					description="Width of the module in pixels" />
+				<field 
+					name="fbheight"
+					type="text"
+					default="320"
+					label="Height"
+					description="Height of the module in pixels" />
+				<field
+					name="show_faces"
+					type="radio"
+					default="true"
+					label="Show Faces"
+					description="Choose Yes or No">
+					<option value="true">Yes</option>
+					<option value="false">No</option>
+				</field>
+				<field
+					name="color_scheme"
+					type="radio"
+					default="light"
+					label="Color Scheme"
+					description="Choose your preferable color scheme">
+					<option value="light">Light</option>
+					<option value="dark">Dark</option>
+				</field>
+				<field
+					name="stream"
+					type="radio"
+					default="false"
+					label="Stream"
+					description="Choose Yes if you want to show stream otherwise No">
+					<option value="true">Yes</option>
+					<option value="false">No</option>
+				</field>
+				<field
+					name="header"
+					type="radio"
+					default="false"
+					label="Header"
+					description="Choose Yes to Show Header otherwise No">
+					<option value="true">Yes</option>
+					<option value="false">No</option>
+				</field>
+				<field
+					name="border"
+					type="radio"
+					default="true"
+					label="Border"
+					description="Choose Yes to Show Border otherwise No">
+					<option value="true">Yes</option>
+					<option value="false">No</option>
+				</field>
+				<field 
+					name="margintop"
+					type="text"
+					default="100"
+					label="Margin Top" 
+					description="Top Margin in pixels" />
+				
+				<field
+					name="loadjquery"
+					type="radio"
+					default="0"
+					label="jQuery"
+					description="Put jQuery to No if you have problem in showing the sidebar slider">
+					<option value="0">Yes</option>
+					<option value="1">No</option>
+				</field>
+			</fieldset>
+
+			<fieldset name="advanced">
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					default=""
+					label="Module Class Suffix"
+					description="Put Your Module Class Suffix" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
