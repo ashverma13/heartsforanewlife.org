@@ -13,9 +13,9 @@ class JConfig {
 	public $debug_lang = '0';
 	public $dbtype = 'mysql';
 	public $host = 'localhost';
-	public $user = 'pearl_life346';
-	public $password = 'Yo-]Q458PS';
-	public $db = 'pearl_life346';
+	public $user = 'homestead';
+	public $password = 'secret';
+	public $db = 'heartsforanewlife_com';
 	public $dbprefix = 'cwb_';
 	public $live_site = '';
 	public $secret = 'qmvqvcx5gd8qvdrh';
