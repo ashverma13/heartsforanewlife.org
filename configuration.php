@@ -13,8 +13,8 @@ class JConfig {
 	public $debug_lang = '0';
 	public $dbtype = 'mysql';
 	public $host = 'localhost';
-	public $user = 'root';
-	public $password = '';
+	public $user = 'homestead';
+	public $password = 'secret';
 	public $db = 'heartsforanewlife_com';
 	public $dbprefix = 'cwb_';
 	public $live_site = '';
