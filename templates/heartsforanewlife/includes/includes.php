@@ -49,20 +49,25 @@ if ($this->direction == 'rtl'){
 //Get main content width
 
 //Get Left column grid width
-if($this->countModules('aside-left') && $hideByOption == false && $view !== 'form'){ 
+if($this->countModules('aside-left') && isset( $hideByOption ) && $hideByOption == false && $view !== 'form'){ 
 	$asideLeftWidth = $this->params->get('asideLeftWidth');
 } else {
 	$asideLeftWidth = "";
 }
 
 //Get Right column grid width
-if($this->countModules('aside-right') && $hideByOption == false && $view !== 'form'){ 
+if($this->countModules('aside-right') && isset( $hideByOption ) && $hideByOption == false && $view !== 'form'){ 
 	$asideRightWidth = $this->params->get('asideRightWidth');
 } else {
 	$asideRightWidth = "";
 }
 
-$mainContentWidth = 12 - ($asideLeftWidth + $asideRightWidth);
+
+if( is_numeric($asideLeftWidth) && is_numeric($asideRightWidth) ){
+	$mainContentWidth = 12 - ($asideLeftWidth + $asideRightWidth);
+}else{
+	$mainContentWidth = 12 ;
+}
 
 
 // Typography variables

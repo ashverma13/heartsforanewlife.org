@@ -7,6 +7,11 @@ include_once ('includes/includes.php');
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" >
 <head>  
   <?php
+
+  $hideByEdit = isset($hideByEdit) ? $hideByEdit : '';
+  $hideByView = isset($hideByView) ? $hideByView : '';
+  $hideByOption = isset($hideByOption) ? $hideByOption : '';
+
     if ($hideByEdit == false){
       $doc->addStyleSheet('templates/'.$this->template.'/css/bootstrap.css'); 
       $doc->addStyleSheet('templates/'.$this->template.'/css/default.css');
